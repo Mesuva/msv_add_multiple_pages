@@ -114,14 +114,13 @@ class AddMultiplePages extends DashboardPageController
                             $currentLevel = 0;
                         }
 
-                        $entry = $parentList[$currentLevel]->add($pageType, array(
-                            'cName' => $pagename
-                        ), $pageTemplate);
+                        $d = $pageType->createDraft($pageTemplate);
+                        $d->setPageDraftTargetParentPageID($parentList[$currentLevel]->getCollectionID());
+                        $pageType->savePageTypeComposerForm($d);
+                        $pageType->publish($d);
+                        $d->updateCollectionName($pagename);
+                        $parentList[$currentLevel+1] = $d;
 
-                        $parentList[$currentLevel+1] = $entry;
-
-                        $pageType->savePageTypeComposerForm($entry);
-                        $entry->updateCollectionName($pagename);
                         $numpages++;
                     }
                 }
