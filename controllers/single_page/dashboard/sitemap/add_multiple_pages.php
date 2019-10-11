@@ -9,7 +9,7 @@ use Concrete\Core\Page\Page;
 
 class AddMultiplePages extends DashboardPageController
 {
-    public function view($pagetypehandle = '', $success = 0) {
+    public function view($pagetypehandle = '') {
 
         $homepage =  Page::getByID(Page::getHomePageID());
         $emptysite = ($homepage->getFirstChild('cDisplayOrder asc', true) === false);
@@ -44,9 +44,7 @@ class AddMultiplePages extends DashboardPageController
                 return Redirect::to('/dashboard/sitemap/add_multiple_pages/');
             }
 
-            if ($success > 0) {
-                $this->set('success', $success . ' ' . ($success > 1 ? t('pages created') : t('page created')));
-            }
+
 
         } else {
             if ($onepagetype) {
@@ -121,7 +119,11 @@ class AddMultiplePages extends DashboardPageController
                     }
                 }
 
-                return Redirect::to('/dashboard/sitemap/add_multiple_pages/' . $pagetypehandle . '/' . $numpages);
+                if ($numpages > 0) {
+                    $this->flash('success',  t2('%d page created', '%d pages created', $numpages));
+                }
+
+                return Redirect::to('/dashboard/sitemap/add_multiple_pages/' . $pagetypehandle );
             }
         }
     }
