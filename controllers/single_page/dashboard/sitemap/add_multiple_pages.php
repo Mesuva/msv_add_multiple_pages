@@ -1,22 +1,17 @@
 <?php
-
 namespace Concrete\Package\MsvAddMultiplePages\Controller\SinglePage\Dashboard\Sitemap;
 
-use \Concrete\Core\Page\Controller\DashboardPageController;
-use Database;
-use Config;
-use File;
-use PageTemplate;
-use PageType;
-use Page;
+use Concrete\Core\Page\Controller\DashboardPageController;
+use Concrete\Core\Routing\Redirect;
+use Concrete\Core\Page\Template as PageTemplate;
+use Concrete\Core\Page\Type\Type as PageType;
+use Concrete\Core\Page\Page;
 
-defined('C5_EXECUTE') or die("Access Denied.");
 class AddMultiplePages extends DashboardPageController
 {
-
     public function view($pagetypehandle = '', $success = 0) {
 
-        $homepage =  Page::getByID(HOME_CID);
+        $homepage =  Page::getByID(Page::getHomePageID());
         $emptysite = ($homepage->getFirstChild('cDisplayOrder asc', true) === false);
         $this->set('emptysite', $emptysite);
 
@@ -28,6 +23,7 @@ class AddMultiplePages extends DashboardPageController
         }
 
         $this->set('pageTypes', $pageTypesSelect);
+        $this->set('app', $this->app);
 
         $onepagetype =  (count($pageTypesSelect) == 1);
         $this->set('onepagetype', $onepagetype);
@@ -45,7 +41,7 @@ class AddMultiplePages extends DashboardPageController
                 $this->set('pageTemplates', $pageTemplatesSelect);
                 $this->set('pageType', $pageType);
             } else {
-                $this->redirect('/dashboard/sitemap/add_multiple_pages/');
+                return Redirect::to('/dashboard/sitemap/add_multiple_pages/');
             }
 
             if ($success > 0) {
@@ -54,7 +50,7 @@ class AddMultiplePages extends DashboardPageController
 
         } else {
             if ($onepagetype) {
-                $this->redirect('/dashboard/sitemap/add_multiple_pages/' . array_pop($pageTypesSelect)->getPageTypeHandle());
+                return Redirect::to('/dashboard/sitemap/add_multiple_pages/' . array_pop($pageTypesSelect)->getPageTypeHandle());
             }
         }
 
@@ -90,7 +86,7 @@ class AddMultiplePages extends DashboardPageController
                 $parentPage = \Page::getByID($this->post('parent_page'));
                 $parentList = array($parentPage);
                 $currentLevel = 0;
-                $pageTemplate = \PageTemplate::getByID($this->post('page_template'));
+                $pageTemplate = PageTemplate::getByID($this->post('page_template'));
 
                 if (is_object($parentPage) && is_object($pageType) && is_object($pageTemplate)) {
                     foreach ($pagenames as $pagename) {
@@ -117,17 +113,16 @@ class AddMultiplePages extends DashboardPageController
                         $d = $pageType->createDraft($pageTemplate);
                         $d->setPageDraftTargetParentPageID($parentList[$currentLevel]->getCollectionID());
                         $pageType->savePageTypeComposerForm($d);
-                        $pageType->publish($d);
                         $d->updateCollectionName($pagename);
+                        $pageType->publish($d);
                         $parentList[$currentLevel+1] = $d;
 
                         $numpages++;
                     }
                 }
 
-                $this->redirect('/dashboard/sitemap/add_multiple_pages/' . $pagetypehandle . '/' . $numpages);
+                return Redirect::to('/dashboard/sitemap/add_multiple_pages/' . $pagetypehandle . '/' . $numpages);
             }
         }
     }
 }
-?>

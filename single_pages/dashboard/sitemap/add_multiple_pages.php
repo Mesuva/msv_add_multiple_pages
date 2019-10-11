@@ -1,6 +1,6 @@
 <?php defined('C5_EXECUTE') or die("Access Denied.");
-$form = $ih = Core::make('helper/form');
-$ci = Core::make('helper/concrete/ui');
+$form = $app->make('helper/form');
+$ci = $app->make('helper/concrete/ui');
 ?>
 
 <?php if (isset($pageType)) { ?>
@@ -44,10 +44,10 @@ $ci = Core::make('helper/concrete/ui');
         ob_start();
         $pageType->renderComposerOutputForm(null, $parent);
         $output = trim(ob_get_clean());
+        $haslabel = (strpos($output, 'label') !== false);
         ?>
 
         <?php if (strpos($output, 'label') !== false) { ?>
-
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h3 class="panel-title"><?php echo t('Page Defaults'); ?></h3>
@@ -59,19 +59,20 @@ $ci = Core::make('helper/concrete/ui');
                 <div id="defaults" style="display: none">
                     <?php echo $output; ?>
                 </div>
-                <?php } ?>
-
-                <div class="ccm-dashboard-form-actions-wrapper">
-                    <div class="ccm-dashboard-form-actions">
-                        <?php if (!$onepagetype) { ?>
-                            <?php echo $ci->button(t('Select Page Type'), $view->url('/dashboard/sitemap/add_multiple_pages'), 'left'); ?>
-                        <?php } ?>
-                        <button class="pull-right btn btn-success"
-                                type="submit"><?php echo t('Create Pages') ?></button>
-                    </div>
-                </div>
             </div>
         </div>
+        <?php } ?>
+
+        <div class="ccm-dashboard-form-actions-wrapper">
+            <div class="ccm-dashboard-form-actions">
+                <?php if (!$onepagetype) { ?>
+                    <?php echo $ci->button(t('Select Page Type'), $view->url('/dashboard/sitemap/add_multiple_pages'), 'left'); ?>
+                <?php } ?>
+                <button class="pull-right btn btn-success"
+                        type="submit"><?php echo t('Create Pages') ?></button>
+            </div>
+        </div>
+
     </form>
 
     <script>
@@ -93,8 +94,8 @@ $ci = Core::make('helper/concrete/ui');
             </tr>
         <?php } ?>
     </table>
-    <?php } ?>
 </fieldset>
+<?php } ?>
 
 <?php
 Core::make('help')->display('<strong>'.t('Nested Pages').'</strong><br />' . t('To create nested pages, indent child page names using dashes, e.g. <br /><br />
