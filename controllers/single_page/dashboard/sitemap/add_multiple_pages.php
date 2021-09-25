@@ -11,6 +11,7 @@ class AddMultiplePages extends DashboardPageController
 {
     public function view($pagetypehandle = '') {
 
+        $this->set('app', $this->app);
         $homepage =  Page::getByID(Page::getHomePageID());
         $emptysite = ($homepage->getFirstChild('cDisplayOrder asc', true) === false);
         $this->set('emptysite', $emptysite);

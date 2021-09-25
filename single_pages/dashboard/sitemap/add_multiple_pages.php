@@ -97,31 +97,6 @@ $ci = $app->make('helper/concrete/ui');
 <?php } ?>
 
 <?php
-Core::make('help')->display('<strong>'.t('Nested Pages').'</strong><br />' . t('To create nested pages, indent child page names using dashes, e.g. <br /><br />
-<pre>Page one
-- Page two
-- Page three
--- Page four
-- Page five
-Page six</pre>
-<br />
-produces a site structure of:<br /><br />
-<ul>
-    <li>Page one
-        <ul>
-            <li>Page two</li>
-            <li>Page three
-                <ul>
-                    <li>Page four</li>
-                </ul>
-            </li>
-            <li>Page five</li>
-        </ul>
-    </li>
-    <li>Page six</li>
-</ul>
-') . '<br /><strong>' .t('Page defaults').'</strong><br />'.
-    t('The page default fields available for the selected Page Type are those configured for Composer editing. These can be modifed within the \'Edit Form\' section of Pages & Themes -> Page Types.')
-
-);
+// included here for v8 support
+$app->make('help/dashboard')->registerMessages(['/dashboard/sitemap/add_multiple_pages'=> \Concrete\Package\MsvAddMultiplePages\Controller::returnHelp() ]);
 ?>
