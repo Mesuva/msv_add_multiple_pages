@@ -30,7 +30,7 @@ class AddMultiplePages extends DashboardPageController
         $this->set('onepagetype', $onepagetype);
 
         if ($pagetypehandle) {
-            $pageType = \PageType::getByHandle($pagetypehandle);
+            $pageType = PageType::getByHandle($pagetypehandle);
 
             if ($pageType) {
                 $pageTemplates = $pageType->getPageTypePageTemplateObjects();
@@ -82,7 +82,7 @@ class AddMultiplePages extends DashboardPageController
             if (!$error && $pagetypehandle ) {
                 $numpages = 0;
                 $pagenames = explode("\n", trim($this->post('pagenames')));
-                $parentPage = \Page::getByID($this->post('parent_page'));
+                $parentPage = Page::getByID($this->post('parent_page'));
                 $parentList = array($parentPage);
                 $currentLevel = 0;
                 $pageTemplate = PageTemplate::getByID($this->post('page_template'));

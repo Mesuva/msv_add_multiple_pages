@@ -42,7 +42,7 @@ $ci = $app->make('helper/concrete/ui');
 
         <?php
         ob_start();
-        $pageType->renderComposerOutputForm(null, $parent);
+        $pageType->renderComposerOutputForm(null);
         $output = trim(ob_get_clean());
         $haslabel = (strpos($output, 'label') !== false);
         ?>
