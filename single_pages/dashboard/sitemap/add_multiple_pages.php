@@ -5,6 +5,7 @@ $ci = $app->make('helper/concrete/ui');
 
 <?php if (isset($pageType)) { ?>
     <form method="post" action="<?= $view->action($pageType->getPageTypeHandle()) ?>">
+        <?= $token->output('add_multiple_pages'); ?>
         <fieldset>
             <?php if ($onepagetype) { ?>
                 <legend><?php echo t('Configure and create pages'); ?></legend>

@@ -53,8 +53,7 @@ class AddMultiplePages extends DashboardPageController
             }
         }
 
-
-        if ($this->post()) {
+        if ($this->post() && $this->token->validate('add_multiple_pages')) {
             $error = false;
 
             if ($this->post('parent_page') <= 0) {

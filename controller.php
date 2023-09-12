@@ -8,7 +8,7 @@ class Controller extends Package {
 
     protected $pkgHandle = 'msv_add_multiple_pages';
     protected $appVersionRequired = '8.0';
-    protected $pkgVersion = '1.2.1';
+    protected $pkgVersion = '1.2.2';
 
     public function getPackageDescription() {
         return t("Add multiple pages to your site at a time");
