@@ -110,6 +110,35 @@ class AddMultiplePages extends DashboardPageController
 
                         $d = $pageType->createDraft($pageTemplate);
                         $d->setPageDraftTargetParentPageID($parentList[$currentLevel]->getCollectionID());
+
+                        $sets = \Concrete\Core\Page\Type\Composer\FormLayoutSet::getList($pageType);
+
+                        $pageControlNameID = false;
+                        $pageControlSlugID = false;
+
+                        foreach ($sets as $set) {
+                            $controls = \Concrete\Core\Page\Type\Composer\FormLayoutSetControl::getList($set);
+
+                           foreach($controls as $control) {
+                               $controllerObject = $control->getPageTypeComposerControlObject();
+
+                               if (class_basename($controllerObject) == 'UrlSlugCorePageProperty') {
+                                   $pageControlSlugID = $control->getPageTypeComposerFormLayoutSetControlID();
+                               }
+                               if (class_basename($controllerObject) == 'NameCorePageProperty') {
+                                   $pageControlNameID = $control->getPageTypeComposerFormLayoutSetControlID();
+                               }
+                           }
+                        }
+
+                        if ($pageControlNameID) {
+                            $_POST['ptComposer'][$pageControlNameID]['name'] = '';
+                        }
+
+                        if ($pageControlSlugID) {
+                            $_POST['ptComposer'][$pageControlSlugID]['url_slug'] = '';
+                        }
+
                         $pageType->savePageTypeComposerForm($d);
                         $d->updateCollectionName($pagename);
                         $pageType->publish($d);
