@@ -24,8 +24,8 @@ $ci = $app->make('helper/concrete/ui');
 
             <div class="form-group">
                 <label for="parent_page" class="form-label"><?php echo t('Parent Page'); ?></label>
-                <?php $pageSelector = Loader::helper('form/page_selector');
-                echo $pageSelector->selectPage('parent_page', ($emptysite ? \Concrete\Core\Page::getHomePageID() : null));
+                <?php $pageSelector = app()->make('helper/form/page_selector');
+                echo $pageSelector->selectPage('parent_page', ($emptysite ? \Concrete\Core\Page\Page::getHomePageID() : null));
                 ?>
             </div>
 
